@@ -1,0 +1,41 @@
+allprojects {
+    apply plugin: "java"
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        testImplementation "junit:junit:4.13"
+    }
+}
+
+project(':services') {
+    apply plugin: 'java'
+
+    dependencies {
+        implementation project(':utils')
+    }
+}
+
+project(':admin') {
+    apply plugin: 'java'
+
+    dependencies {
+        implementation project(':utils')
+        implementation project(':services')
+    }
+}
+
+project(':web') {
+    apply plugin: 'war'
+
+    dependencies {
+        implementation project(':utils')
+        implementation project(':services')
+        implementation 'javax.servlet:javax.servlet-api:4.0.1'
+    }
+}
+
+test {
+    reports.html.destination = file("$buildDir/reports/tests")
+}
